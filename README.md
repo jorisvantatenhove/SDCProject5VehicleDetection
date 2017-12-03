@@ -1,37 +1,65 @@
 # Vehicle Detection
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
+[//]: # (Image References)
 
-In this project, your goal is to write a software pipeline to detect vehicles in a video (start with the test_video.mp4 and later implement on full project_video.mp4), but the main output or product we want you to create is a detailed writeup of the project.  Check out the [writeup template](https://github.com/udacity/CarND-Vehicle-Detection/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup.  
+[image1]: ./examples/car1.png "Car 1"
+[image2]: ./examples/car2.png "Car 2"
+[image3]: ./examples/car3.png "Car 3"
+[image4]: ./examples/car4.png "Car 4"
+[image5]: ./examples/noncar1.png "Noncar 1"
+[image6]: ./examples/noncar2.png "Noncar 2"
+[image7]: ./examples/hog_still_frame.png "HOG Procedure"
+[image8]: ./examples/windows.png "Windows"
+[image9]: ./examples/frame5_boxes.png "Boxes"
 
-Creating a great writeup:
----
-A great writeup should include the rubric points as well as your description of how you addressed each point.  You should include a detailed description of the code used in each step (with line-number references and code snippets where necessary), and links to other supporting documents or external references.  You should include images in your writeup to demonstrate how your code works with examples.  
 
-All that said, please be concise!  We're not looking for you to write a book here, just a brief description of how you passed each rubric point, and references to the relevant code :). 
+The aim of the following project is finding all vehicles in every frame in an input video. We do this by splitting up the frame into smaller squares, and then decide per square whether we recognize car or not. We train a classifier using a heatmap of gradient (HOG) approach.
 
-You can submit your writeup in markdown or use another method and submit a pdf instead.
+## Data
 
-The Project
----
+We have a dataset containing about 9000 64x64 images of cars, and also of about 9000 64x64 images of non-car things that you might end up seeing on the road: lane lines, trees, guardrails and so on. Below are a couple of examples:
 
-The goals / steps of this project are the following:
+### Cars
+![Car1][image1]
+![Car2][image2]
+![Car3][image3]
+![Car4][image4]
 
-* Perform a Histogram of Oriented Gradients (HOG) feature extraction on a labeled training set of images and train a classifier Linear SVM classifier
-* Optionally, you can also apply a color transform and append binned color features, as well as histograms of color, to your HOG feature vector. 
-* Note: for those first two steps don't forget to normalize your features and randomize a selection for training and testing.
-* Implement a sliding-window technique and use your trained classifier to search for vehicles in images.
-* Run your pipeline on a video stream (start with the test_video.mp4 and later implement on full project_video.mp4) and create a heat map of recurring detections frame by frame to reject outliers and follow detected vehicles.
-* Estimate a bounding box for vehicles detected.
+### Noncars
+![Noncar1][image5]
+![Noncar2][image6]
 
-Here are links to the labeled data for [vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip) and [non-vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip) examples to train your classifier.  These example images come from a combination of the [GTI vehicle image database](http://www.gti.ssr.upm.es/data/Vehicle_database.html), the [KITTI vision benchmark suite](http://www.cvlibs.net/datasets/kitti/), and examples extracted from the project video itself.   You are welcome and encouraged to take advantage of the recently released [Udacity labeled dataset](https://github.com/udacity/self-driving-car/tree/master/annotations) to augment your training data.  
+## Classifier
 
-Some example images for testing your pipeline on single frames are located in the `test_images` folder.  To help the reviewer examine your work, please save examples of the output from each stage of your pipeline in the folder called `ouput_images`, and include them in your writeup for the project by describing what each image shows.    The video called `project_video.mp4` is the video your pipeline should work well on.  
+We can use these 18,000 images to train our classifier. As suggested, we've chosen a LinearSVC (see svc_utility.py) with only HOG features (see hog_utility.py). After tweaking the parameters a bit, we already achieved an accuracy of above 98%, without using spatial or color features, so we did not deem this necessary.
 
-**As an optional challenge** Once you have a working pipeline for vehicle detection, add in your lane-finding algorithm from the last project to do simultaneous lane-finding and vehicle detection!
+We did this by switching to the YUV color channel, and taking all three channels into consideration. We split the 64x64 image into cells of 8x8, and determine the gradient direction for each of these cells. The gradient snaps to one of 16 directions. We normalize a group of 2x2 cells. We apply this for every color channel (this car is actually taken from a screenshot from the video!):
 
-**If you're feeling ambitious** (also totally optional though), don't stop there!  We encourage you to go out and take video of your own, and show us how you would implement this project on a new video!
+![HOG Procedure][image7]
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+All these gradients together for the basis on which we trained our classifier.
 
+## Sliding window 
+
+For a given frame, we now want to divide the image into squares in which we can expect to find cars, and identify them using the classifier we've trained.
+
+We look for the following squares:
+
+![Windows][image8]
+
+Given all windows, we now want to take out the false positives. To do this, we implement a threshold function using a heatmap. We overlap all windows that return a positive classification, and then if a pixel has enough overlap, we interpret this as part of a vehicle.
+All the distinct blobs of pixels are then the vehicles. How this process work is displayed on its performance on test image 5, where there is actually some overlap in the initial windows, but that no longer exists after thresholding:
+
+![Boxes][image9]
+
+## End result and discussion
+
+The end result can be found in project_output.mp4.
+
+This result can be improved by further getting rid of the false negatives, probably by taking history. Something like a weighted average of the heatmap of the past couple of frames could really help us getting rid of the negatives in the middle of the road.
+Alternatively, we could train our classifier better by providing more noncar data of empty highway.
+
+Moreover, we identify some vehicles in the incoming traffic. When driving on a highway, this is irrelevant information and will only pollute the results. When driving on a road without separation between the two driving directions however, this should be improved because then this is really important!
+
+Lastly, we should also train for motor bikes! We would not recognize them with the current classifier, which could potentially be very dangerous!!
