@@ -6,6 +6,9 @@ from scipy.ndimage.measurements import label
 import boxes_utility
 import svc_utility
 from moviepy.editor import VideoFileClip
+from collections import deque
+
+global on_windows_history
 
 
 def find_vehicles(img):
@@ -25,15 +28,18 @@ def find_vehicles(img):
     on_windows = boxes_utility.search_windows(img, windows, svc, cspace, orient, pix_per_cell, cells_per_block,
                                               hog_channel)
 
+    on_windows_history.append(on_windows)
+
     heatmap = np.zeros_like(img[:, :, 0])
-    heatmap = boxes_utility.add_heat(heatmap, on_windows)
-    heatmap = boxes_utility.apply_threshold(heatmap, 2)
+    heatmap = boxes_utility.add_heat_with_history(heatmap, on_windows_history)
+    heatmap = boxes_utility.apply_threshold(heatmap, 7)
 
     labels = label(heatmap)
 
     boxed_image = boxes_utility.draw_labeled_bboxes(img, labels)
 
     return boxed_image
+
 
 cspace = 'YUV'
 orient = 16
@@ -47,12 +53,13 @@ svc = svc_utility.load_classifier()
 car_images = glob.glob('../training_data/vehicles/**/*.png')
 noncar_images = glob.glob('../training_data/non_vehicles/**/*.png')
 
+on_windows_history = deque(maxlen=5)
+
 for car_image in car_images:
     img = mpimg.imread(car_image)
     boxed = find_vehicles(img)
     plt.imshow(boxed)
     plt.show()
-
 
 # test_images = glob.glob('test_images/*.jpg')
 #
@@ -64,5 +71,3 @@ for car_image in car_images:
 
 video = VideoFileClip('project_video.mp4').fl_image(find_vehicles)
 video.write_videofile('project_output.mp4', audio=False)
-
-

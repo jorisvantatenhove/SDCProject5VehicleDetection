@@ -55,9 +55,9 @@ All the distinct blobs of pixels are then the vehicles. How this process work is
 
 ## End result and discussion
 
-The end result can be found in project_output.mp4.
+The end result can be found in project_output.mp4. We've made a small adaptation when working with a video compared to just looking at images: instead of just finding vehicles here, we keep track of the bounding boxes found in the last 5 frames and apply a heatmap to those. We also increase the threshold, as we find more matches now, of course!
 
-This result can be improved by further getting rid of the false negatives, probably by taking history. Something like a weighted average of the heatmap of the past couple of frames could really help us getting rid of the negatives in the middle of the road.
+This result can be improved by further getting rid of the false negatives, probably by taking history. 
 Alternatively, we could train our classifier better by providing more noncar data of empty highway.
 
 Moreover, we identify some vehicles in the incoming traffic. When driving on a highway, this is irrelevant information and will only pollute the results. When driving on a road without separation between the two driving directions however, this should be improved because then this is really important!
