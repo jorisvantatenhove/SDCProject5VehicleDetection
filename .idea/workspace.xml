@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a7ec0bb-dcad-4a99-a7be-fa82cf88716d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/frame5_boxes.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/hog_still_frame.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/project_output.mp4" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/svc.save" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/boxes_utility.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/color_utility.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/hog_utility.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/svc_utility.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/HOG_example.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/bboxes_and_heat.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/car_not_car.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/labels_map.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/output_bboxes.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/sliding_window.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/sliding_windows.jpg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_output.mp4" afterPath="$PROJECT_DIR$/project_output.mp4" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project.py" afterPath="$PROJECT_DIR$/project.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,8 +18,8 @@
       <file leaf-file-name="project.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/project.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="22" column="6" lean-forward="false" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
+            <state relative-caret-position="567">
+              <caret line="64" column="30" lean-forward="false" selection-start-line="64" selection-start-column="30" selection-end-line="64" selection-end-column="30" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -477,8 +461,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/project.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="22" column="6" lean-forward="false" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
+        <state relative-caret-position="567">
+          <caret line="64" column="30" lean-forward="false" selection-start-line="64" selection-start-column="30" selection-end-line="64" selection-end-column="30" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>

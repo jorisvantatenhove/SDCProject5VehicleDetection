@@ -44,23 +44,23 @@ hog_channel = 'ALL'
 # svc = svc_utility.train_classifier(cspace, orient, pix_per_cell, cells_per_block, hog_channel)
 svc = svc_utility.load_classifier()
 
-# car_images = glob.glob('../training_data/vehicles/**/*.png')
-# noncar_images = glob.glob('../training_data/non_vehicles/**/*.png')
-#
-# for car_image in car_images:
-#     img = mpimg.imread(car_image)
-#     boxed = find_vehicles(img)
-#     plt.imshow(boxed)
-#     plt.show()
+car_images = glob.glob('../training_data/vehicles/**/*.png')
+noncar_images = glob.glob('../training_data/non_vehicles/**/*.png')
 
-
-test_images = glob.glob('test_images/*.jpg')
-
-for test_image in test_images:
-    img = mpimg.imread(test_image)
+for car_image in car_images:
+    img = mpimg.imread(car_image)
     boxed = find_vehicles(img)
     plt.imshow(boxed)
     plt.show()
+
+
+# test_images = glob.glob('test_images/*.jpg')
+#
+# for test_image in test_images:
+#     img = mpimg.imread(test_image)
+#     boxed = find_vehicles(img)
+#     plt.imshow(boxed)
+#     plt.show()
 
 video = VideoFileClip('project_video.mp4').fl_image(find_vehicles)
 video.write_videofile('project_output.mp4', audio=False)
